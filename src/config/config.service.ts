@@ -1,0 +1,22 @@
+import { Injectable } from '@nestjs/common';
+import { envSchema, type Env } from './env.schema.js';
+
+@Injectable()
+export class ConfigService {
+  readonly env: Env;
+
+  constructor(source: NodeJS.ProcessEnv = process.env) {
+    const parsed = envSchema.safeParse(source);
+    if (!parsed.success) {
+      const fields = parsed.error.issues
+        .map((issue) => `${issue.path.join('.') || 'env'}: ${issue.message}`)
+        .join('; ');
+      throw new Error(`Config error: ${fields}`);
+    }
+    this.env = parsed.data;
+  }
+
+  get<K extends keyof Env>(key: K): Env[K] {
+    return this.env[key];
+  }
+}
