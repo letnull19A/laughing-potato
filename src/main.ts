@@ -7,6 +7,7 @@ async function bootstrap(): Promise<void> {
   // Application context (no HTTP driver): bot runs via polling, HTTP
   // controllers stay inactive. PORT is reserved for a future health endpoint.
   const app = await NestFactory.createApplicationContext(AppModule);
+  app.enableShutdownHooks();
   await app.init();
   Logger.log('Application initialized', 'Bootstrap');
 }
