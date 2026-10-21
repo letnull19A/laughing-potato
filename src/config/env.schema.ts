@@ -7,6 +7,9 @@ export const envSchema = z.object({
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
     .default('development'),
+  // Reserved for future HTTP/health endpoint. Not read by the app yet
+  // (kept here so PORT in .env/compose is accepted, not stripped).
+  PORT: z.string().min(1).optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

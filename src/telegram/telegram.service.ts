@@ -28,7 +28,13 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       if (!message.text.includes(tag)) {
         return;
       }
-      await ctx.reply(`ack: ${message.text}`);
+      try {
+        await ctx.reply(`ack: ${message.text}`);
+      } catch (error) {
+        this.logger.warn(
+          `Failed to reply: ${error instanceof Error ? error.message : String(error)}`,
+        );
+      }
     });
 
     await this.bot.launch();
