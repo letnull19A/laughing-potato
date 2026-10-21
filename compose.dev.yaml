@@ -1,0 +1,19 @@
+# Local development overlay.
+# Usage: docker compose -f compose.yaml -f compose.dev.yaml up --build
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    command: ["bun", "--watch", "src/main.ts"]
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./src:/app/src
+      - ./package.json:/app/package.json:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      - ./bun.lock:/app/bun.lock:ro
+    networks:
+      - front
+      - back

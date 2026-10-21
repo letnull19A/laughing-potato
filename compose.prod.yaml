@@ -1,0 +1,12 @@
+# Production overlay.
+# Usage: docker compose -f compose.yaml -f compose.prod.yaml up -d --build
+services:
+  app:
+    restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    environment:
+      NODE_ENV: production
+    networks:
+      - front
+      - back

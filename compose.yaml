@@ -1,0 +1,34 @@
+name: laughing-potato
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laughing-potato:latest
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      BOT_TOKEN: ${BOT_TOKEN:-}
+      BOT_TAG: ${BOT_TAG:-bot}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${PORT:-3000}
+    ports:
+      - "${PORT:-3000}:3000"
+    networks:
+      - front
+      - back
+    volumes:
+      - app-data:/app/data
+
+networks:
+  front:
+    driver: bridge
+  back:
+    driver: bridge
+
+volumes:
+  app-data:
+    driver: local
