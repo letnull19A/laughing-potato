@@ -11,6 +11,19 @@ Recive telegram action in telegram chat
 - порт `${PORT:-3000}:3000`, env-имена `BOT_TOKEN` `BOT_TAG` `LOG_LEVEL` `NODE_ENV` `PORT` (без значений)
 - stub: пустой `BOT_TOKEN` — Telegram disabled, приложение стартует
 
+### Без Docker
+
+- требования: `Bun 1.4.2` (как `ARG BUN_VERSION` в `Dockerfile`), клонировать с `--recurse-submodules`
+- клон: `git clone --recurse-submodules <repo>` + `cd`
+- подготовка: `cp .env.example .env`
+- зависимости: `bun install`
+- dev: `bun run dev`
+- сборка + запуск: `bun run build` + `bun dist/main.js`
+- стоп: `Ctrl+C`
+- env-имена `BOT_TOKEN` `BOT_TAG` `LOG_LEVEL` `NODE_ENV` `PORT` (без значений)
+- stub: пустой `BOT_TOKEN` — Telegram disabled, приложение стартует
+- `PORT` зарезервирован, HTTP/health endpoint нет
+
 ## Production запуск
 
 - старт: `docker compose -f compose.yaml -f compose.prod.yaml up -d --build`
