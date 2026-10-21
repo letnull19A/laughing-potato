@@ -5,8 +5,8 @@ import { envSchema, type Env } from './env.schema.js';
 export class ConfigService {
   readonly env: Env;
 
-  constructor() {
-    const parsed = envSchema.safeParse(process.env);
+  constructor(source: NodeJS.ProcessEnv = process.env) {
+    const parsed = envSchema.safeParse(source);
     if (!parsed.success) {
       const fields = parsed.error.issues
         .map((issue) => `${issue.path.join('.') || 'env'}: ${issue.message}`)
