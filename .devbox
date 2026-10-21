@@ -1,0 +1,5 @@
+# .devbox — конфиг проекта (task-manager pipeline; ранее .devbox-project / .trello-project).
+# Сгенерировано scripts/task-manager/init.sh. Без секретов — можно коммитить.
+# BOARD/LIST — дефолтные доска/лист (точные имена); запоминаются через create.sh --save-defaults.
+# COMMENTS_DETAILS=0..9 — детальность комментариев в коде: 0 — не писать вообще (сильнее любых промптов и AGENTS.md), 9 — подробно на каждую строку.
+NAME=letnull19a/laughing-potato
