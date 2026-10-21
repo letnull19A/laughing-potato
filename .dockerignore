@@ -1,0 +1,24 @@
+# env secrets — never bake into image context (except example template)
+.env*
+!.env.example
+
+# git history
+.git/
+
+# dependencies (reinstalled per Dockerfile stage)
+node_modules/
+
+# build output (rebuilt in build stage)
+dist/
+
+# test coverage
+coverage/
+
+# logs
+*.log
+
+# local compose overrides
+compose.override.yaml
+
+# agent workspace
+.opencode/
