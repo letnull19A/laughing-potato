@@ -20,6 +20,12 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
 
     this.bot = new Telegraf(token);
 
+    this.bot.catch((err) =>
+      this.logger.warn(
+        `Telegraf error: ${err instanceof Error ? err.message : String(err)}`,
+      ),
+    );
+
     this.bot.on('message', async (ctx) => {
       const message = ctx.message as { text?: unknown };
       if (typeof message.text !== 'string') {
@@ -28,6 +34,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       if (!message.text.includes(tag)) {
         return;
       }
+      this.logger.debug('Telegram mention received');
       try {
         await ctx.reply(`ack: ${message.text}`);
       } catch (error) {
@@ -37,7 +44,20 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       }
     });
 
-    await this.bot.launch();
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        await this.bot.launch();
+        break;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        if (attempt === 3) {
+          this.logger.error(`Telegram launch failed after 3 attempts: ${message}`);
+          throw error;
+        }
+        this.logger.warn(`Telegram launch attempt ${attempt} failed: ${message}, retrying...`);
+        await new Promise((r) => setTimeout(r, 3000));
+      }
+    }
     this.logger.log('Telegram polling started');
   }
 
