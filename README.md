@@ -11,6 +11,12 @@ Recive telegram action in telegram chat
 - порт `${PORT:-3000}:3000`, env-имена `BOT_TOKEN` `BOT_TAG` `LOG_LEVEL` `NODE_ENV` `PORT` (без значений)
 - stub: пустой `BOT_TOKEN` — Telegram disabled, приложение стартует
 
+### Telegram-бот
+
+- `BotFather` `/setprivacy` → `Disable` + удалить/заново добавить бота в группу, иначе упоминания с тегом не доходят
+- `LOG_LEVEL=debug` в `.env` чтобы видеть debug-лог упоминания (дефолт `info` скрывает)
+- `BOT_TOKEN` только в локальном `.env`, при утечке — `/revoke` в `BotFather`
+
 ### Без Docker
 
 - требования: `Bun 1.4.2` (как `ARG BUN_VERSION` в `Dockerfile`), клонировать с `--recurse-submodules`
