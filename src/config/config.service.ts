@@ -7,6 +7,7 @@ export class ConfigService {
 
   constructor() {
     // Тестабельность без DI-поломки — через прямое чтение process.env.
+    // Приоритет: окружение > .env-файл (дефолт dotenv: compose environment > env_file, существующие переменные окружения не перезаписываются).
     const parsed = envSchema.safeParse(process.env);
     if (!parsed.success) {
       const fields = parsed.error.issues
