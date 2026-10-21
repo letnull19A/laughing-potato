@@ -1,7 +1,10 @@
 import { z } from 'zod';
 
 export const envSchema = z.object({
-  BOT_TOKEN: z.string().min(1).optional(),
+  BOT_TOKEN: z.preprocess(
+    (v) => (v === '' ? undefined : v),
+    z.string().min(1).optional(),
+  ),
   BOT_TAG: z.string().min(1).default('bot'),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
   NODE_ENV: z
