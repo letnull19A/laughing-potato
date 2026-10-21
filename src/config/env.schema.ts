@@ -5,7 +5,7 @@ export const envSchema = z.object({
     (v) => (v === '' ? undefined : v),
     z.string().min(1).optional(),
   ),
-  BOT_TAG: z.string().min(1).default('bot'),
+  BOT_TAG: z.string().min(1).refine((v) => v.startsWith('@'), { message: 'BOT_TAG must start with @, e.g. @mybot' }).default('@bot'),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
