@@ -2,7 +2,7 @@ import 'dotenv/config';
 import 'reflect-metadata';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module.js';
+import { AppModule } from './app/app.module.js';
 
 async function bootstrap(): Promise<void> {
   // Application context (no HTTP driver): polling by default, in webhook
