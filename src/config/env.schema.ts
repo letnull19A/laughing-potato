@@ -10,9 +10,29 @@ export const envSchema = z.object({
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
     .default('development'),
-  // Reserved for future HTTP/health endpoint. Not read by the app yet
-  // (kept here so PORT in .env/compose is accepted, not stripped).
-  PORT: z.string().min(1).optional(),
+  // Used by the Telegraf webhook-listener in webhook mode
+  // (in polling mode accepted but not used for listening).
+  PORT: z.string().min(1).default('3000'),
+  TELEGRAM_MODE: z.enum(['polling', 'webhook']).default('polling'),
+  WEBHOOK_DOMAIN: z.preprocess(
+    (v) => (v === '' ? undefined : v),
+    z.string().url().optional(),
+  ),
+  WEBHOOK_PATH: z
+    .string()
+    .default('/telegram-webhook')
+    .refine((v) => v.startsWith('/'), {
+      message: 'WEBHOOK_PATH must start with /',
+    }),
+}).superRefine((val, ctx) => {
+  if (val.TELEGRAM_MODE === 'webhook' && !val.WEBHOOK_DOMAIN) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['WEBHOOK_DOMAIN'],
+      message:
+        'WEBHOOK_DOMAIN is required when TELEGRAM_MODE=webhook (public https URL, e.g. https://bot.example.com)',
+    });
+  }
 });
 
 export type Env = z.infer<typeof envSchema>;
