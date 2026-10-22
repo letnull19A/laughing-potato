@@ -16,7 +16,7 @@ export const envSchema = z.object({
   TELEGRAM_MODE: z.enum(['polling', 'webhook']).default('polling'),
   WEBHOOK_DOMAIN: z.preprocess(
     (v) => (v === '' ? undefined : v),
-    z.string().url().optional(),
+    z.url().optional(),
   ),
   WEBHOOK_PATH: z
     .string()
